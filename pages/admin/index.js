@@ -1,6 +1,8 @@
 import { PureComponent } from "react"
 import Select from 'react-select'
 
+import {getGames} from 'api/queries'
+
 class Admin extends PureComponent {
     constructor(props){
         super(props)
@@ -8,6 +10,7 @@ class Admin extends PureComponent {
     }
 
     render(){
+        console.log(getGames)
         return(
             <div>
                 This.is. Admin folder
