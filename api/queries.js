@@ -1,7 +1,17 @@
 export const apiPath = 'http://localhost:3001'
 
-function dFetch(url, options){
-    return fetch(apiPath + url, Object.assign({}, options, {headers: headers}))
+let defaultHeaders = {}
+
+function dFetch(url, options, myHeaders = {}){
+    return fetch(apiPath + url, 
+        Object.assign(
+            {mode: 'cors'}, 
+            options, 
+            {
+                headers: Object.assign({}, defaultHeaders, myHeaders)
+            }
+        )
+    )
         .then((response) => response)
         .catch((error) => {console.log('error',error); return 0})
 }
@@ -12,8 +22,21 @@ export function getGames(){
 
 
 
-// export function createGame
+export function createGame(json) {
+    return dFetch('/games', {
+        method: 'POST',
+        body: JSON.stringify(json)
+    },
+    {
+        'Content-Type': 'application/json'
+    })
+}
 
-// export function updateGame
+export function updateGame(json){
+    return dFetch('/games', {
+        method: 'PUT',
+        body: JSON.stringify(json)
+    })
+}
 
 // export function deleteGame

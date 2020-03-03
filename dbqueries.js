@@ -251,8 +251,9 @@ const deleteGenre = (request, response) => {
 const getGames = (request, response) => {
     pool.query('SELECT * FROM  games', (err, result) => {
         if (err) {
-            throw error
+            throw err
         }
+        console.log(result.rows)
 
         response.status(200).json(result.rows)
     })

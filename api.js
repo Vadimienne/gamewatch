@@ -1,6 +1,11 @@
 const express = require('express')
+const cors = require('cors')
 const app = express()
+
 const port = 3001
+
+const allowedCorsOrigins = ['http://localhost:3000', 'http://localhost:3001']
+
 
 const db = require('./dbqueries.js')
 
@@ -21,6 +26,7 @@ function responseSender (req, res, next){
 }
 
 app.use(express.json()) //without this req.body is undefined
+app.use(cors({origin: allowedCorsOrigins}))
 app.use(incomingRequestLogger)
 //app.use(errorHandler)
 // app.use(responseSender)
