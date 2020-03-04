@@ -1,5 +1,6 @@
 import { PureComponent } from "react"
 import Select from 'react-select'
+import AdminLayout from 'components/AdminLayout'
 
 import {getGames} from 'api/queries'
 
@@ -13,7 +14,7 @@ class Admin extends PureComponent {
 
     async componentDidMount(){
         const response = await getGames()
-        let json = await response.json()
+        let json = await response.status == 200 ? await response.json() : null
         console.log(json)
         this.setState({games: json})
     }
@@ -21,7 +22,7 @@ class Admin extends PureComponent {
     render(){
         // console.log(getGames)
         return(
-            <>
+            <AdminLayout>
                 <div>
                     This.is. Admin folder
                 </div>
@@ -36,7 +37,7 @@ class Admin extends PureComponent {
                 :
                 <div>Nothing yet</div>
             }
-            </>
+            </AdminLayout>
         )
     }
 }

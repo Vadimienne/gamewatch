@@ -12,12 +12,18 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@zeit/next-css": "^1.0.1",
+    "@zeit/next-sass": "^1.0.1",
     "cors": "^2.8.5",
+    "css-loader": "^3.4.2",
     "express": "^4.17.1",
     "next": "^9.1.5",
+    "node-sass": "^4.13.1",
     "pg": "^7.17.1",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
-    "react-select": "^3.0.8"
+    "react-select": "^3.0.8",
+    "sass-loader": "^8.0.2",
+    "style-loader": "^1.1.3"
   }
 }
