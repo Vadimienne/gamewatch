@@ -42,7 +42,7 @@ class Admin extends PureComponent {
                 :
                 <div>Nothing yet</div>
             }
-            <Button bgColor='green'>Добавить игру</Button>
+            <Button bgColor='green' textColor='white' href='/adminhub/games/new-game'>Добавить игру</Button>
             </AdminLayout>
         )
     }

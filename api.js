@@ -2,8 +2,6 @@ const express = require('express')
 const cors = require('cors')
 const app = express()
 
-console.log(process.env)
-
 const port = 3001
 
 const allowedCorsOrigins = ['http://localhost:3000', 'http://localhost:3001']

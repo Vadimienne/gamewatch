@@ -1,6 +1,6 @@
 import { PureComponent } from "react"
 import Router from "next/router"
-import AdminLayout from 'components/AdminLayout'
+import Layout from 'components/admin/Layout'
 
 class Admin extends PureComponent {
     constructor(props){

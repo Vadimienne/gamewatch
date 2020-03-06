@@ -1,4 +1,5 @@
 import { PureComponent } from "react"
+import Link from 'next/link'
 
 import 'styles/Button.sass'
 
@@ -13,10 +14,13 @@ class Button extends PureComponent {
         let {
             type,
             textColor,
-            bgColor
+            bgColor,
+            href
         } = this.props
 
         return(
+            <>
+            {!href ? 
             <button 
                 className='my-custom-button' 
                 type={type? type: 'button'} 
@@ -27,6 +31,20 @@ class Button extends PureComponent {
             >
                 {this.props.children}
             </button>
+            :
+            <Link href={href}>
+                <a 
+                    className='my-custom-button' 
+                    type={type? type: 'button'} 
+                    style={{
+                        backgroundColor: bgColor, 
+                        color: textColor
+                    }}
+                >
+                    {this.props.children}
+                </a>
+            </Link>}
+            </>
         )
     }
 }

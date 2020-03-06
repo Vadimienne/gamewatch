@@ -249,14 +249,29 @@ const deleteGenre = (request, response) => {
 //
 
 const getGames = (request, response) => {
-    pool.query('SELECT * FROM  games', (err, result) => {
-        if (err) {
-            throw err
-        }
-        console.log(result.rows)
+    pool.query(`SELECT 
+                title, 
+                release_date, 
+                description, 
+                user_rating, 
+                studios.name AS studio_name, 
+                publishers.name AS publisher_name,
+                age_restrictions.name AS age_restriction_name
+                FROM games 
+                LEFT JOIN studios ON (games.studio_id = studios.id) 
+                LEFT JOIN publishers ON (games.publisher_id = publishers.id)
+                LEFT JOIN age_restrictions ON (games.age_restriction_id = age_restrictions.id)`
+    )
+        .then(result => response.status(200).json(result.rows))
+        .catch(err => response.status(500).json({error: err}))
+    // pool.query('SELECT * FROM  games', (err, result) => {
+    //     if (err) {
+    //         throw err
+    //     }
+    //     console.log(result.rows)
 
-        response.status(200).json(result.rows)
-    })
+    //     response.status(200).json(result.rows)
+    // })
 }
 
 const createGame = (request, response) => {
