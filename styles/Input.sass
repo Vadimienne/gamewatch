@@ -1,26 +1,19 @@
 .field-container
-  border: 1px solid #e6e6e6
-  background-color: #FFF
-  border-radius: 4px
-  height: 38px
-  -webkit-transition: border-color 0.25s ease
-  transition: border-color 0.25s ease
-  padding: 0 0 0 0
-  position: relative
-  display: flex
-  overflow: hidden
-
-
-  .text-input
-    display: inline-block
-    outline: none
-    border: none
-    background: transparent
-    height: 100%
-    width: 100%
-    -webkit-box-sizing: border-box
-    box-sizing: border-box
-    font-size: 14px
-    font-weight: 400
+    border: 1px solid #e6e6e6
+    background-color: #FFF
     border-radius: 4px
-    cursor: text
+    height: 38px
+    -webkit-transition: border-color 0.25s ease
+    transition: border-color 0.25s ease
+    padding: 0 0 0 0
+    position: relative
+    display: flex
+    padding: 5px
+    overflow: hidden
+
+
+    &.single-line
+        resize: none
+        height: 26px
+        font-size: 16px
+        white-space: nowrap

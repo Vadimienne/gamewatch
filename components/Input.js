@@ -15,23 +15,52 @@ class Class extends PureComponent {
             value,
             className,
             placeholder,
-            maxLength
+            maxLength,
+            id,
+            textArea,
+            rows
         } = this.props
 
         return(
-            <div className={className}>
-                <div className='field-container'>
-                    <input 
-                        className='text-input'
+                <>
+                    <textarea
+                        id={id}
+                        className={'text-input field-container ' + className}
                         onChange={onChange}
                         value={value}
-                        placeholer={placeholder}
+                        placeholder={placeholder}
                         maxLength={maxLength}
-                    ></input>
-                </div>
-            </div>
+                        rows={rows}
+                    />
+                </>
         )
     }
 }
 
 export default Class
+
+
+// <>
+//     {!textArea ?
+//         <div className={'field-container '+ className}>
+//             <input 
+//                 id={id}
+//                 className='text-input'
+//                 onChange={onChange}
+//                 value={value}
+//                 placeholer={placeholder}
+//                 maxLength={maxLength}
+//             ></input>
+//         </div>
+//     :
+//     <div className={'field-container '+ className}>
+//             <textarea 
+//                 id={id}
+//                 className='text-input field-container'
+//                 onChange={onChange}
+//                 value={value}
+//                 placeholer={placeholder}
+//                 maxLength={maxLength}
+//             ></textarea>
+//     </div>}
+// </>
