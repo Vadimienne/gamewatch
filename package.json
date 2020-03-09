@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "node customserver.js",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "api": "node api.js"
   },
   "keywords": [],
   "author": "",

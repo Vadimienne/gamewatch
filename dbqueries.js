@@ -254,6 +254,7 @@ const getGames = (request, response) => {
                 release_date, 
                 description, 
                 user_rating, 
+                critic_rating,
                 studios.name AS studio_name, 
                 publishers.name AS publisher_name,
                 age_restrictions.name AS age_restriction_name

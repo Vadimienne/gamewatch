@@ -15,14 +15,15 @@ class Button extends PureComponent {
             type,
             textColor,
             bgColor,
-            href
+            href,
+            className
         } = this.props
 
         return(
             <>
             {!href ? 
             <button 
-                className='my-custom-button' 
+                className={'my-custom-button ' + className} 
                 type={type? type: 'button'} 
                 style={{
                     backgroundColor: bgColor, 
@@ -34,7 +35,7 @@ class Button extends PureComponent {
             :
             <Link href={href}>
                 <a 
-                    className='my-custom-button' 
+                    className={'my-custom-button ' + className} 
                     type={type? type: 'button'} 
                     style={{
                         backgroundColor: bgColor, 

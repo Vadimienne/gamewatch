@@ -1,6 +1,11 @@
 import { PureComponent } from "react"
+import Select from 'react-select'
 
 import Layout from 'components/admin/Layout'
+
+import Input from 'components/Input'
+
+import 'styles/admin/newGame.sass'
 
 class NewGame extends PureComponent {
 
@@ -16,16 +21,32 @@ class NewGame extends PureComponent {
     render(){
         return(
             <Layout>
-                <form>
-                    <label for='game-title'>Название</label>
-                    <input id='game-title'/>
-                    <label for='game-description'>Описание</label>
-                    <input id='game-description'/>
+                <form className='add-new-game-form'>
+
+                    <div className='form-first-row'>
+                        <div className='form-item'>
+                            <label for='game-title'>Название</label>
+                            <Input />
+                        </div>
+                        <div>
+                            <label>Разработчик:</label>
+                            <Select />
+                        </div>
+                        <div>
+                            <label>Издатель:</label>
+                            <Select />
+                        </div>
+                    </div>
+                    <div className='form-item'>
+                        <label for='game-description'>Описание</label>
+                        <Input />
+                    </div>
                     <label>Дата релиза:</label>
-                    <label>Издатель:</label>
-                    <label>Разработчик:</label>
+                    <input type='date'/>
                     <label>Возрастное ограничение:</label>
+                    <Select />
                     <label>Рейтинг критиков:</label>
+                    <Input />
                 </form>
             </Layout>
         )
