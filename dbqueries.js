@@ -26,13 +26,9 @@ const pool = new Pool({
 //
 
 const getPublishers = (request, response) => {
-    pool.query('SELECT * FROM  publishers', (err, result) => {
-        if (err) {
-            throw error
-        }
-
-        response.status(200).json(result.rows)
-    })
+    pool.query('SELECT * FROM  publishers')
+        .then(result => response.status(200).json(result.rows))
+        .catch(err => response.status(500).json({error: err}))
 }
 
 const createPublisher = (request, response) => {
@@ -82,13 +78,9 @@ const deletePublisher = (request, response) => {
 //
 
 const getAgeRestrictions = (request, response) => {
-    pool.query('SELECT * FROM  age_restrictions', (err, result) => {
-        if (err) {
-            throw error
-        }
-
-        response.status(200).json(result.rows)
-    })
+    pool.query('SELECT * FROM  age_restrictions')
+        .then(result => response.status(200).json(result.rows))
+        .catch(err => response.status(500).json({error: err}))
 }
 
 const createAgeRestriction = (request, response) => {
@@ -135,18 +127,14 @@ const deleteAgeRestriction = (request, response) => {
 //
 // AGE RESTRICTION
 
-// STUDIO
+// DEV STUDIO
 // 
 // 
 
 const getStudios = (request, response) => {
-    pool.query('SELECT * FROM  studios', (err, result) => {
-        if (err) {
-            throw error
-        }
-
-        response.status(200).json(result.rows)
-    })
+    pool.query('SELECT * FROM  studios')
+        .then(result => response.status(200).json(result.rows))
+        .catch(err => response.status(500).json({error: err}))
 }
 
 const createStudio = (request, response) => {
@@ -192,13 +180,9 @@ const deleteStudio = (request, response) => {
 //
 
 const getGenres = (request, response) => {
-    pool.query('SELECT * FROM  genres', (err, result) => {
-        if (err) {
-            throw error
-        }
-
-        response.status(200).json(result.rows)
-    })
+    pool.query('SELECT * FROM  genres')
+        .then(result => response.status(200).json(result.rows))
+        .catch(err => response.status(500).json({error: err}))
 }
 
 const createGenre = (request, response) => {
@@ -389,13 +373,9 @@ const deleteGame = (request, response) => {
 //
 
 const getPlatforms = (request, response) => {
-    pool.query('SELECT * FROM  platforms', (err, result) => {
-        if (err) {
-            throw error
-        }
-
-        response.status(200).json(result.rows)
-    })
+    pool.query('SELECT * FROM  platforms')
+        .then(result => response.status(200).json(result.rows))
+        .catch(err => response.status(500).json({error: err}))
 }
 
 const createPlatform = (request, response) => {
@@ -446,15 +426,8 @@ const deletePlatform = (request, response) => {
 
 const getReviews = (request, response, next) => {
     pool.query('SELECT * FROM reviews')
-        .then((res) => {
-            console.log('Get reviews successful')
-            throw new Error('error wow')
-            response.status(200).send(res.rows)
-        })
-        .catch(err => {
-            console.error(err)
-            response.status(500).send(err)
-        })
+        .then(result => response.status(200).json(result.rows))
+        .catch(err => response.status(500).json({error: err}))
 
 }
 // const createReview

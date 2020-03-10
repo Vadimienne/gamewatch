@@ -16,7 +16,8 @@ class Button extends PureComponent {
             textColor,
             bgColor,
             href,
-            className
+            className,
+            onClick
         } = this.props
 
         return(
@@ -29,6 +30,7 @@ class Button extends PureComponent {
                     backgroundColor: bgColor, 
                     color: textColor
                 }}
+                onClick={onClick}
             >
                 {this.props.children}
             </button>

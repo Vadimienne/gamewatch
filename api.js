@@ -1,4 +1,6 @@
 const express = require('express')
+var multer = require('multer')
+var upload = multer({dest: './uploads/'})
 const cors = require('cors')
 const app = express()
 
@@ -34,8 +36,21 @@ app.use(incomingRequestLogger)
 app.get('/publishers', db.getPublishers)
 
 app.get('/games', db.getGames)
+app.post('/games', upload.single('poster'), (req, res, next)=> {
+    setTimeout(() => {
+    console.log('Create game request:', req.body)
+    console.log('files: ', req.files)}, 2000)
+    res.send('OK')
+})
 
 app.get('/reviews', db.getReviews)
 
+app.get('/studios', db.getStudios)
+
+app.get('/platforms', db.getPlatforms)
+
+app.get('/ageRestrictions', db.getAgeRestrictions)
+
+app.get('/genres', db.getGenres)
 
 app.listen(port, () => console.log('Apps listening on port ',port, '!'))

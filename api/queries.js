@@ -22,13 +22,12 @@ export function getGames(){
 
 
 
+
+
 export function createGame(json) {
     return dFetch('/games', {
         method: 'POST',
-        body: JSON.stringify(json)
-    },
-    {
-        'Content-Type': 'application/json'
+        body: json
     })
 }
 
@@ -37,6 +36,27 @@ export function updateGame(json){
         method: 'PUT',
         body: JSON.stringify(json)
     })
+}
+
+
+export function getGenres(){
+    return dFetch('/genres')
+}
+
+export function getStudios(){
+    return dFetch('/studios')
+}
+
+export function getPublishers(){
+    return dFetch('/publishers')
+}
+
+export function getAgeRestrictions(){
+    return dFetch('/ageRestrictions')
+}
+
+export function getPlatforms(){
+    return dFetch('/platforms')
 }
 
 // export function deleteGame
