@@ -1,6 +1,17 @@
 const express = require('express')
 var multer = require('multer')
-var upload = multer({dest: './uploads/'})
+var storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, './uploads/')
+    },
+    filename: (req, file, cb) => {
+        cb(null, file.originalname)
+    }
+})
+var upload = multer({
+    dest: './uploads/',
+    storage: storage
+})
 const cors = require('cors')
 const app = express()
 
@@ -39,7 +50,7 @@ app.get('/games', db.getGames)
 app.post('/games', upload.single('poster'), (req, res, next)=> {
     setTimeout(() => {
     console.log('Create game request:', req.body)
-    console.log('files: ', req.files)}, 2000)
+    console.log('files: ', req.file)}, 2000)
     res.send('OK')
 })
 

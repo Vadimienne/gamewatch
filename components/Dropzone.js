@@ -9,7 +9,9 @@ class Dropzone extends PureComponent {
 
         this.state = {
             hightlight: false,
-            selectedImg:''}
+            selectedImg:'',
+            imagePreview:''
+        }
 
         this.fileInputRef = React.createRef()
         this.defaultImg = ""
@@ -29,6 +31,16 @@ class Dropzone extends PureComponent {
         if (this.props.disabled) return
         const files = evt.target.files
 
+        let reader = new FileReader()
+
+        reader.onload = (e) => {
+            this.setState({imagePreview: e.target.result})
+        }
+
+        reader.readAsDataURL(files[0])
+
+        //this.setState({imagePreview: reader.readAsDataURL(files[0])})
+
         this.props.onChange(files)
     }
 
@@ -45,6 +57,14 @@ class Dropzone extends PureComponent {
 
         this.props.onChange(files)
 
+        let reader = new FileReader()
+
+        reader.onload = (e) => {
+            this.setState({imagePreview: e.target.result})
+        }
+
+        reader.readAsDataURL(files[0])
+
         // let response = await postImage(this.props.recipeId, files[0], this.props.fetchPath)
 
 
@@ -53,24 +73,24 @@ class Dropzone extends PureComponent {
 
     render() {
 
-        const url = this.props.data
+        const {imagePreview} = this.state
         
 
         return (
             <div
-                className={`Dropzone ${this.state.hightlight ? 'Highlight ' : ''} ${url ? ' uploaded' : ''}`}
+                className={`Dropzone ${this.state.hightlight ? 'Highlight ' : ''} ${imagePreview ? ' uploaded' : ''}`}
                 onDrop={this.onDrop}
                 onDragOver={this.onDragOver}
                 onClick={this.openFileDialog}
-                url={url}
                 style={{ 
                     cursor: this.props.disabled ? 'default' : 'pointer', 
-                    backgroundImage: url ? `url(${url})`: '',
-                    height: this.props.height? this.props.height : '340px'
+                    backgroundImage: imagePreview ? `url(${imagePreview})`: '',
+                    height: this.props.height? this.props.height : '300px',
+                    width: this.props.width? this.props.width: '200px'
                 }}
             >
-                {!url?
-                    <span className='Dropzone__upload-description'>Загрузите фотографию</span> : undefined
+                {!imagePreview?
+                    <span className='Dropzone__upload-description'>&#xe811;</span> : undefined
                 }
                 
                 

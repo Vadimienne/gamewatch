@@ -1,0 +1,26 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg">
+<metadata>Copyright (C) 2020 by original authors @ fontello.com</metadata>
+<defs>
+<font id="fontello" horiz-adv-x="1000" >
+<font-face font-family="fontello" font-weight="400" font-stretch="normal" units-per-em="1000" ascent="850" descent="-150" />
+<missing-glyph horiz-adv-x="1000" />
+<glyph glyph-name="asset-9" unicode="&#xe809;" d="M1826-21l-848 849a76 76 0 0 1-107 0l-849-849a76 76 0 0 1 107-107l795 796 796-796a76 76 0 0 1 106 107z" horiz-adv-x="1848" />
+
+<glyph glyph-name="asset-10" unicode="&#xe80a;" d="M1826 828a76 76 0 0 1-106 0l-796-795-795 795a76 76 0 0 1-107 0h0a76 76 0 0 1 0-107l849-849a76 76 0 0 1 107 0l848 849a75 75 0 0 1 0 107z" horiz-adv-x="1848" />
+
+<glyph glyph-name="asset-13" unicode="&#xe80c;" d="M754 176l-747 587a87 87 0 0 0 87 87h1323a87 87 0 0 0 87-87z m0-81l-754 593v-751a88 88 0 0 1 88-87h1335a88 88 0 0 1 87 87v751z m-88 68l-647-280m1478 7l-648 281" horiz-adv-x="1510" />
+
+<glyph glyph-name="asset-15" unicode="&#xe810;" d="M951 431h-370v370a49 49 0 0 1-49 49h-64a49 49 0 0 1-49-49v-370h-370a49 49 0 0 1-49-49v-64a49 49 0 0 1 49-49h370v-370a49 49 0 0 1 49-49h64a49 49 0 0 1 49 49v370h370a49 49 0 0 1 49 49v64a49 49 0 0 1-49 49z" horiz-adv-x="1000" />
+
+<glyph glyph-name="asset-16" unicode="&#xe811;" d="M839-150h-678a161 161 0 0 0-161 161v678a161 161 0 0 0 161 161h678a161 161 0 0 0 161-161v-678a161 161 0 0 0-161-161z m-11 559h-269v269c0 44-54 36-82 36a36 36 0 0 1-36-36v-269h-269c-44 0-36-54-36-82a36 36 0 0 1 36-36h269v-269c0-44 54-36 82-36a36 36 0 0 1 36 36v269h269a36 36 0 0 1 37 36c0 28 7 83-37 82z" horiz-adv-x="1000" />
+
+<glyph glyph-name="asset-18" unicode="&#xe813;" d="M930 53c-17-25-60-17-60-17h-803s-43-8-59 17a46 46 0 0 0 0 50 241 241 0 0 1 136 160l9 142c0 336 222 344 222 344a83 83 0 0 1 51 42v26a43 43 0 0 0 16 24 44 44 0 0 0 54 0 43 43 0 0 0 16-24v-26a83 83 0 0 1 51-42s222-8 222-343l8-143a241 241 0 0 1 137-160 46 46 0 0 0 0-50z m-316-119c-9-76-145-84-145-84s-137 8-146 84a58 58 0 0 0 60 59h171a58 58 0 0 0 60-59z" horiz-adv-x="938" />
+
+<glyph glyph-name="asset-20" unicode="&#xe815;" d="M1024 23l-213 192a431 431 0 1 1-138-153l213-192a79 79 0 0 1 112 6l31 36a79 79 0 0 1-5 111z m-894 396a301 301 0 1 0 301-301 301 301 0 0 0-301 301z" horiz-adv-x="1050" />
+
+<glyph glyph-name="folder-open-empty" unicode="&#xf115;" d="M994 331q0 19-30 19h-607q-22 0-48-12t-39-29l-164-203q-11-13-11-22 0-20 30-20h607q23 0 48 13t40 29l164 203q10 12 10 22z m-637 90h429v90q0 22-16 38t-38 15h-321q-23 0-38 16t-16 38v36q0 22-15 38t-38 15h-179q-22 0-38-15t-16-38v-476l143 175q25 30 65 49t78 19z m708-90q0-35-25-67l-165-203q-24-30-65-49t-78-19h-607q-51 0-88 37t-37 88v536q0 51 37 88t88 37h179q51 0 88-37t37-88v-18h303q52 0 88-37t37-88v-90h107q30 0 56-13t37-40q8-17 8-37z" horiz-adv-x="1071.4" />
+</font>
+</defs>
+</svg>

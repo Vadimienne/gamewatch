@@ -1,7 +1,7 @@
 .Dropzone
   height: 340px
   width: 580px
-  border-radius: 1px
+  border-radius: 4px
   background-size: cover
   background-repeat: no-repeat
   background-position: center
@@ -10,24 +10,18 @@
   justify-content: center
   flex-direction: column
   font-size: 16px
-  background-color: #fbf8f6
-  background-image: url('../images/upload-image.png')
-  background-size: auto auto
+  background-color: #f1f1f1
+  background-size: cover
 
   &.uploaded
     background-image: none
   
-  &:hover
-    background-image: url('../images/upload-image_hover.png')
   &__upload-description
-    position: relative
-    top: 40px
-    font-size: 14px
-    font-weight: 400
-
-  &.uploaded
-    margin: 0px 1px
-    width: 578px
+    font-family: 'GW-Icons'
+    //text-align: center
+    font-size: 70px
+    color: #439ac3
+    //font-weight: 400
 
 
   .uploader__button

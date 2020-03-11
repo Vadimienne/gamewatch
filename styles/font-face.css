@@ -24,3 +24,15 @@
          url('/static/fonts/roboto-v20-cyrillic_latin-700.ttf') format('truetype'), /* Safari, Android, iOS */
          url('/static/fonts/roboto-v20-cyrillic_latin-700.svg#Roboto') format('svg'); /* Legacy iOS */
   }
+
+  @font-face {
+       font-family: 'GW-Icons';
+       font-style: normal;
+       font-weight: 400;
+       src: url('/static/fonts/fontello.eot?75833');
+       src: url('/static/fonts/fontello.eot?75833#iefix') format('embedded-opentype'),
+            url('/static/fonts/fontello.woff2?75833') format('woff2'),
+            url('/static/fonts/fontello.woff?75833') format('woff'),
+            url('/static/fonts/fontello.ttf?75833') format('truetype'),
+            url('/static/fonts/fontello.svg?75833#fontello') format('svg');
+          }

@@ -112,11 +112,40 @@ class NewGame extends PureComponent {
     }
 
     onSubmit(){
-        let json = new FormData()
-        json.append('title', this.state.title)
-        json.append('description', this.state.description)
-        json.append('poster', this.state.poster, `${this.state.title}-poster.jpg`)
-        let response = createGame(json)
+        let {
+            title,
+            description,
+            releaseDate,
+            criticRating,
+            poster,
+            selectedPublisher,
+            selectedStudio,
+            selectedPlatforms,
+            selectedGenres,
+            selectedAgeRestriction,
+            
+        } = this.state
+
+        let form = new FormData()
+        form.append('title', title)
+        form.append('description', description)
+        form.append('poster', poster, `${this.state.title}-${Date.now()}-poster.jpg`)
+
+        let date = new Date(releaseDate.split('/').reverse().join('/'))
+        date = date.getTime()
+        form.append('release_date', date)
+        form.append('studio_id', selectedStudio.value)
+        form.append('publisher_id', selectedPublisher.value)
+        form.append('age_restriction_id', selectedAgeRestriction.value)
+        form.append('critic_rating', criticRating)
+
+        let genreIds = selectedGenres.map(el => el.value)
+        let platformIds = selectedPlatforms.map(el => el.value)
+
+        form.append('genre_ids', genreIds)
+        form.append('platform_ids', platformIds)
+
+        let response = createGame(form)
     }
 
 
@@ -126,6 +155,8 @@ class NewGame extends PureComponent {
         let {
             title, 
             description,
+            releaseDate, 
+            criticRating,
             genres,
             studios,
             publishers,
@@ -134,7 +165,8 @@ class NewGame extends PureComponent {
             selectedStudio,
             selectedPublisher,
             selectedAgeRestriction,
-            selectedGenres
+            selectedGenres,
+            selectedPlatforms
         } = this.state
 
 
@@ -175,25 +207,46 @@ class NewGame extends PureComponent {
                             />
                         </div>
                     </div>
-                    <div className='form-item'>
-                        <label htmlFor='game-description'>Описание</label>
-                        <Input 
-                            id='game-description'
-                            className='game-description-input'
-                            textArea
-                            onChange={(e) => this.onTextInput(e, 'description')}
-                        />
-                    </div>
-                    <div>
-                        <label>Жанры:</label>
-                        <Select
-                            styles={this.studioSelectStyles}
-                            placeholder='экшн, пазл...' 
-                            options={[{label: 'экшн', value: 1}, {label: 'пазл', value: 2}]}
-                            isMulti
-                            onChange={(val)=> this.onSelect(val, 'selectedGenres')}
-                            value={selectedGenres}
-                        />
+
+                    <div className='description-poster-container'>
+                        <div className='description-genre-platform-container'>
+                            <div className='form-item'>
+                                <label htmlFor='game-description'>Описание</label>
+                                <Input 
+                                    id='game-description'
+                                    className='game-description-input'
+                                    textArea
+                                    value={description}
+                                    onChange={(e) => this.onTextInput(e, 'description')}
+                                />
+                            </div>
+                            <div>
+                                <label>Жанры:</label>
+                                <Select
+                                    styles={this.studioSelectStyles}
+                                    placeholder='экшн, пазл...' 
+                                    options={genres}
+                                    isMulti
+                                    onChange={(val)=> this.onSelect(val, 'selectedGenres')}
+                                    value={selectedGenres}
+                                />
+                            </div>
+                            <div>
+                                <label>Платформы:</label>
+                                <Select
+                                    styles={this.studioSelectStyles}
+                                    placeholder='PlayStation 4, PC...' 
+                                    options={platforms}
+                                    isMulti
+                                    onChange={(val)=> this.onSelect(val, 'selectedPlatforms')}
+                                    value={selectedPlatforms}
+                                />
+                            </div>
+                        </div>
+                        <div>
+                            <label>Постер</label>
+                            <Dropzone onChange={this.onAddPoster}></Dropzone>
+                        </div>
                     </div>
                     <div>
                         <label>Дата релиза:</label>
@@ -201,6 +254,7 @@ class NewGame extends PureComponent {
                             className='field-container game-release-input'
                             mask='99/99/9999'
                             placeholder='31/12/2020'
+                            value={releaseDate}
                             onChange={(e) => this.onTextInput(e, 'releaseDate')}
                         />
                     </div>
@@ -220,12 +274,12 @@ class NewGame extends PureComponent {
                         <Input 
                             className='game-critic-rating-input single-line'
                             maxLength={3}
+                            value={criticRating}
                             onChange={(e) => this.onTextInput(e, 'criticRating')}
                         />
                     </div>
                     <Button className='green-button' onClick={this.onSubmit}>Cоздать</Button>
-                    <img src='/images/rdr2poster.jpg'></img>
-                    <Dropzone onChange={this.onAddPoster}></Dropzone>
+                    
                 </form>
             </Layout>
         )
