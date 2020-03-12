@@ -17,20 +17,22 @@ class Button extends PureComponent {
             bgColor,
             href,
             className,
-            onClick
+            onClick,
+            disabled
         } = this.props
 
         return(
             <>
             {!href ? 
             <button 
-                className={'my-custom-button ' + className} 
+                className={'my-custom-button ' + className + (disabled? ' disabled': '')} 
                 type={type? type: 'button'} 
                 style={{
                     backgroundColor: bgColor, 
                     color: textColor
                 }}
                 onClick={onClick}
+                disabled={disabled}
             >
                 {this.props.children}
             </button>

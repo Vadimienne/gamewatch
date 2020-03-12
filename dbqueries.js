@@ -33,13 +33,9 @@ const getPublishers = (request, response) => {
 
 const createPublisher = (request, response) => {
     pool.query(`INSERT INTO publishers (name)
-                VALUES ('${request.body.name}')`, (err, result) => {
-        if (err) {
-            throw err
-        }
-
-        response.status(200).json(result.rows)
-    })
+                VALUES ('${request.body.name}')`)
+        .then(result => response.status(200).json(result.rows))
+        .catch(err => response.status(500).json({error: err}))
 }
 
 const updatePublisher = (request, response) => {
@@ -127,7 +123,7 @@ const deleteAgeRestriction = (request, response) => {
 //
 // AGE RESTRICTION
 
-// DEV STUDIO
+// STUDIO
 // 
 // 
 
@@ -139,13 +135,9 @@ const getStudios = (request, response) => {
 
 const createStudio = (request, response) => {
     pool.query(`INSERT INTO studios (name)
-                VALUES ('${request.body.new_studio_name}')`, (err, result) => {
-        if (err) {
-            throw err
-        }
-
-        response.status(200).json(result.rows)
-    })
+                VALUES ('${request.body.name}')`)
+        .then(result => response.status(200).json(result.rows))
+        .catch(err => response.status(500).json({error: err}))
 }
 
 const updateStudio = (request, response) => {
@@ -187,14 +179,9 @@ const getGenres = (request, response) => {
 
 const createGenre = (request, response) => {
     pool.query(`INSERT INTO genres (name)
-                VALUES ('${request.body.name}')`, 
-                (err, result) => {
-                    if (err) {
-                        throw err
-                    }
-
-                    response.status(200).json(result.rows)
-    })
+                VALUES ('${request.body.name}')`)
+        .then(result => response.status(200).json(result.rows))
+        .catch(err => response.status(500).json({error: err}))
 }
 
 const updateGenre = (request, response) => {
@@ -267,7 +254,8 @@ const createGame = (request, response) => {
                     publisher_id,
                     studio_id,
                     age_restriction_id,
-                    critic_rating)
+                    critic_rating,
+                    poster_url)
                 VALUES (
                     '${request.body.title}',
                     '${request.body.release_date}',
@@ -380,13 +368,9 @@ const getPlatforms = (request, response) => {
 
 const createPlatform = (request, response) => {
     pool.query(`INSERT INTO platforms (name)
-                VALUES ('${request.body.new_platform_name}')`, (err, result) => {
-        if (err) {
-            throw err
-        }
-
-        response.status(200).json(result.rows)
-    })
+                VALUES ('${request.body.name}')`)
+        .then(result => response.status(200).json(result.rows))
+        .catch(err => response.status(500).json({error: err}))
 }
 
 const updatePlatform = (request, response) => {

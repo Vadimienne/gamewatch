@@ -98,6 +98,20 @@ class NewGame extends PureComponent {
 
     // FUNCTIONS
 
+    componentDidUpdate(){
+        // Set validness
+        let {
+            title,
+            poster
+        } = this.state
+        if (title && poster){
+            this.setState({formValid: true})
+        }
+        else {
+            this.setState({formValid: false})
+        }
+    }
+
     onTextInput(e, field){
         this.setState({[`${field}`]: e.target.value})
     }
@@ -131,6 +145,9 @@ class NewGame extends PureComponent {
         form.append('description', description)
         form.append('poster', poster, `${this.state.title}-${Date.now()}-poster.jpg`)
 
+
+        // release date validness
+        // presense on release date, studio, publisher, age r, critic rating
         let date = new Date(releaseDate.split('/').reverse().join('/'))
         date = date.getTime()
         form.append('release_date', date)
@@ -166,7 +183,8 @@ class NewGame extends PureComponent {
             selectedPublisher,
             selectedAgeRestriction,
             selectedGenres,
-            selectedPlatforms
+            selectedPlatforms,
+            formValid
         } = this.state
 
 
@@ -278,7 +296,13 @@ class NewGame extends PureComponent {
                             onChange={(e) => this.onTextInput(e, 'criticRating')}
                         />
                     </div>
-                    <Button className='green-button' onClick={this.onSubmit}>Cоздать</Button>
+                    <Button 
+                        className='green-button' 
+                        onClick={this.onSubmit}
+                        disabled={!formValid}
+                    >
+                        Cоздать
+                    </Button>
                     
                 </form>
             </Layout>

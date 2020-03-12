@@ -6,6 +6,14 @@
     margin-left: auto
     margin-right: auto
     padding: 20px 0
+
+    .add-game-button-container
+        margin-bottom: 20px
+        width: 100%
+        display: flex
+        justify-content: flex-start
+        margin-left: 20px
+
     .game-table-container
         display: flex
         justify-content: center
@@ -13,15 +21,19 @@
         -webkit-box-shadow: 0px 0px 1px 0px rgba(115,115,115,1)
         -moz-box-shadow: 0px 0px 1px 0px rgba(115,115,115,1)
         box-shadow: 0px 0px 1px 0px rgba(115,115,115,1)
+        margin-bottom: 20px
 
     .table-top
-        margin: 10px 0px
-        padding-bottom: 15px
         font-weight: 700
         border-bottom: 1px solid #e8e8e8
+        user-select: none
 
         & > *
             display: inline-block
+            height: 100%
+            line-height: 50px
+            &:hover
+                background-color: grey
 
         &__title
             margin-left: 20px
@@ -35,16 +47,14 @@
 
         &__user-rating
             width: 75px
+            cursor: help
         
         &__critic-rating
             width: 73px
+            cursor: help
 
         &__studio
             width: 230px
 
         &__publisher
             width: 240px
-
-    .game-add-button
-        background-color: green
-        color: white

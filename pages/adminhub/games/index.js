@@ -10,7 +10,7 @@ import 'styles/admin/Games.sass'
 
 import {getGames} from 'api/queries'
 
-class Admin extends PureComponent {
+class AdminGames extends PureComponent {
     constructor(props){
         super(props)
         this.state = {
@@ -29,40 +29,43 @@ class Admin extends PureComponent {
         // console.log(getGames)
         return(
             <AdminLayout>
-            {this.state.games?
-                <div className='game-table-container'>
-                    <div className='table-top'>
-                        <span className='table-top__title'>Название</span>
-                        <span className='table-top__release'>Релиз</span>
-                        <span className='table-top__description'>Описание</span>
-                        <span className='table-top__user-rating'>UR</span>
-                        <span className='table-top__critic-rating'>CR</span>
-                        <span className='table-top__studio'>Разработчик</span>
-                        <span className='table-top__publisher'>Издатель</span>
-                        <span className='table-top__age-restriction'>👶</span>
-                    </div>
-                    <div className='game'>
-                        <ul>
-                        {this.state.games.map((game, index) => 
-                            <li key={`game-li-item-admin-${index}`}>
-                                <GameCard game={game} key={`game-item-admin-${index}`}/>
-                            </li>
-                        )}
-                        </ul>
-                    </div>
-                </div> 
-                :
-                <div>Nothing yet</div>
-            }
-            <Button 
-                className='game-add-button' 
-                href='/adminhub/games/new-game'
-            >
-                Добавить игру
-            </Button>
+
+                <div className='add-game-button-container'>
+                    <Button 
+                        className='green-button' 
+                        href='/adminhub/games/new-game'
+                    >
+                        Добавить игру
+                    </Button>
+                </div>
+                {this.state.games?
+                    <div className='game-table-container'>
+                        <div className='table-top'>
+                            <span className='table-top__title'>Название</span>
+                            <span className='table-top__release'>Релиз</span>
+                            <span className='table-top__description'>Описание</span>
+                            <span className='table-top__user-rating' title='юзер рейтинг, ма фрэнд'>UR</span>
+                            <span className='table-top__critic-rating' title='критик рейтинг'>CR</span>
+                            <span className='table-top__studio'>Разработчик</span>
+                            <span className='table-top__publisher'>Издатель</span>
+                            <span className='table-top__age-restriction'>👶</span>
+                        </div>
+                        <div className='game'>
+                            <ul>
+                            {this.state.games.map((game, index) => 
+                                <li key={`game-li-item-admin-${index}`}>
+                                    <GameCard game={game} key={`game-item-admin-${index}`}/>
+                                </li>
+                            )}
+                            </ul>
+                        </div>
+                    </div> 
+                    :
+                    <div>Nothing yet</div>
+                }
             </AdminLayout>
         )
     }
 }
 
-export default Admin
+export default AdminGames

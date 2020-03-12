@@ -46,22 +46,35 @@ app.use(incomingRequestLogger)
 
 app.get('/publishers', db.getPublishers)
 
+app.post('/publishers', db.createPublisher)
+
+// GAMES
+
 app.get('/games', db.getGames)
 app.post('/games', upload.single('poster'), (req, res, next)=> {
-    setTimeout(() => {
-    console.log('Create game request:', req.body)
-    console.log('files: ', req.file)}, 2000)
-    res.send('OK')
+    console.log('file: ', req.file)
 })
 
 app.get('/reviews', db.getReviews)
 
+// STUDIOS
+
 app.get('/studios', db.getStudios)
+
+app.post('/studios', db.createStudio)
+
+// PLATFORMS
 
 app.get('/platforms', db.getPlatforms)
 
+app.post('/platforms', db.createPlatform)
+
 app.get('/ageRestrictions', db.getAgeRestrictions)
 
+// GENRES
+
 app.get('/genres', db.getGenres)
+
+app.post('/genres', db.createGenre)
 
 app.listen(port, () => console.log('Apps listening on port ',port, '!'))
