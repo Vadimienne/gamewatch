@@ -226,6 +226,7 @@ const getGames = (request, response) => {
                 description, 
                 user_rating, 
                 critic_rating,
+                poster_url,
                 studios.name AS studio_name, 
                 publishers.name AS publisher_name,
                 age_restrictions.name AS age_restriction_name
@@ -236,17 +237,11 @@ const getGames = (request, response) => {
     )
         .then(result => response.status(200).json(result.rows))
         .catch(err => response.status(500).json({error: err}))
-    // pool.query('SELECT * FROM  games', (err, result) => {
-    //     if (err) {
-    //         throw err
-    //     }
-    //     console.log(result.rows)
-
-    //     response.status(200).json(result.rows)
-    // })
 }
 
+
 const createGame = (request, response) => {
+    console.log('createGame invoked')
     pool.query(`INSERT INTO games (
                     title, 
                     release_date, 
@@ -258,43 +253,35 @@ const createGame = (request, response) => {
                     poster_url)
                 VALUES (
                     '${request.body.title}',
-                    '${request.body.release_date}',
-                    '${request.body.description}',
-                    ${request.body.publisher_id},
-                    ${request.body.studio_id},
-                    ${request.body.age_restriction_id},
-                    ${request.body.critic_rating}
-                )`, 
-                (err, result) => {
-                    if (err) {
-                        throw err
-                    }
-                    var currentGenreId
-                    for (currentGenreId of request.body.genres) {
-                        pool.query(`INSERT INTO games_genres (game_id, genre_id)
-                                    VALUES (${request.body.id}, ${currentGenreId}`,
-                                    (genreError, genreResult) => {
-                                        if (genreError) {
-                                            throw genreError
-                                        }
-                                    })
-                    }
+                    '${request.body.release_date || 'infinity'}',
+                    '${request.body.description || null}',
+                    ${request.body.publisher_id || null},
+                    ${request.body.studio_id || null},
+                    ${request.body.age_restriction_id || null},
+                    ${request.body.critic_rating || null},
+                    '${request.file.path}'
+                ) RETURNING *`)
+        .then(result => {
+            let genre_ids = JSON.parse(request.body.genre_ids)
+            for (var i = 0; i < genre_ids.length; i++) {
+                pool.query(`INSERT INTO games_genres (game_id, genre_id)
+                            VALUES (${result.rows[0].id}, ${genre_ids[i]})`)
+                    .then(() => console.log('done'))
+                    .catch(err => {throw err})
+            }
 
-                    var currentPlatformId
-                    for (currentPlatformId of request.body.platforms) {
-                        pool.query(`INSERT INTO games_platforms (game_id, platform_id)
-                                    VALUES (${request.body.id}, ${currentPlatformId}`,
-                                    (genreError, genreResult) => {
-                                        if (genreError) {
-                                            throw genreError
-                                        }
-                                    })
-                    }
-
-                    
-
-                    response.status(200).json(result.rows)
-    })
+            let platform_ids = JSON.parse(request.body.platform_ids)
+            for (var i = 0; i < platform_ids.length; i++) {
+                pool.query(`INSERT INTO games_platforms (game_id, platform_id)
+                            VALUES (${result.rows[0].id}, ${platform_ids[i]})`)
+                    .then(() => console.log('done'))
+                    .catch(err => {throw err})
+            }
+        })
+        .then(() => response.status(200))
+        .catch(err => {
+            console.log('gotcha error: ', err)
+            response.status(500).json({error: err.toString()})})
 }
 
 const updateGame = (request, response) => {

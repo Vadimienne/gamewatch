@@ -3,6 +3,15 @@
 
 const express = require('express')
 const next = require('next')
+const cors = require('cors')
+
+const allowedCorsOrigins = [
+  'http://localhost:3000', 
+  'http://localhost:3001', 
+  'http://95.73.203.246:80',
+  'http://95.73.203.246:81',
+  'http://95.73.203.246'
+]
 
 console.log('node env: ', process.env.NODE_ENV)
 const dev = process.env.NODE_ENV !== "production";
@@ -15,6 +24,7 @@ const port = process.env.PORT || 3000;
     await app.prepare();
     const server = express();
     server.use(express.static('static'))
+    server.use(cors({origin: allowedCorsOrigins}))
     server.all("*", (req, res) => {
       return handle(req, res);
     });

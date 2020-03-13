@@ -1,24 +1,28 @@
 const express = require('express')
 var multer = require('multer')
-var storage = multer.diskStorage({
+var posterStorage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, './uploads/')
+        cb(null, './static/images/posters/')
     },
     filename: (req, file, cb) => {
         cb(null, file.originalname)
     }
 })
-var upload = multer({
-    dest: './uploads/',
-    storage: storage
+var uploadPosters = multer({
+    storage: posterStorage
 })
 const cors = require('cors')
 const app = express()
 
 const port = 3001
 
-const allowedCorsOrigins = ['http://localhost:3000', 'http://localhost:3001']
-
+const allowedCorsOrigins = [
+    'http://localhost:3000', 
+    'http://localhost:3001', 
+    'http://95.73.203.246:80',
+    'http://95.73.203.246:81',
+    'http://95.73.203.246'
+  ]
 
 const db = require('./dbqueries.js')
 
@@ -51,9 +55,7 @@ app.post('/publishers', db.createPublisher)
 // GAMES
 
 app.get('/games', db.getGames)
-app.post('/games', upload.single('poster'), (req, res, next)=> {
-    console.log('file: ', req.file)
-})
+app.post('/games', uploadPosters.single('poster'), db.createGame)
 
 app.get('/reviews', db.getReviews)
 

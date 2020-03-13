@@ -1,4 +1,4 @@
-export const apiPath = 'http://localhost:3001'
+export const apiPath = 'http://95.73.203.246:81'//'http://localhost:3001'
 
 let defaultHeaders = {}
 

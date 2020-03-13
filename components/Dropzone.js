@@ -22,6 +22,14 @@ class Dropzone extends PureComponent {
         this.onDrop = this.onDrop.bind(this)
     }
 
+    componentDidUpdate(prevProps, prevState){
+        if(prevProps.isFilePresent != this.props.isFilePresent){
+            if (!this.props.isFilePresent){
+                this.setState({imagePreview: null})
+            }
+        }
+    }
+
     openFileDialog() {
         if (this.props.disabled) return
         this.fileInputRef.current.click()
@@ -37,9 +45,9 @@ class Dropzone extends PureComponent {
             this.setState({imagePreview: e.target.result})
         }
 
-        reader.readAsDataURL(files[0])
-
-        //this.setState({imagePreview: reader.readAsDataURL(files[0])})
+        if (files.length){
+            reader.readAsDataURL(files[0])
+        }
 
         this.props.onChange(files)
     }
@@ -49,6 +57,7 @@ class Dropzone extends PureComponent {
     }
 
     async onDrop(event) {
+        let { accept } = this.props
         event.preventDefault()
 
         if (this.props.disabled) return
@@ -99,6 +108,7 @@ class Dropzone extends PureComponent {
                     className="FileInput"
                     type="file"
                     onChange={this.onFilesAdded}
+                    accept={this.props.accept}
                 />
             </div>
         )

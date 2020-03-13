@@ -38,7 +38,6 @@ class NewGame extends PureComponent {
             selectedAgeRestriction: null,
             selectedPlatforms: null,
             selectedGenres: null,
-
         }
 
         this.onTextInput = this.onTextInput.bind(this)
@@ -98,18 +97,76 @@ class NewGame extends PureComponent {
 
     // FUNCTIONS
 
-    componentDidUpdate(){
-        // Set validness
+    componentDidUpdate(prevProps, prevState){
+
         let {
             title,
-            poster
+            poster,
+            releaseDate,
+            criticRating
         } = this.state
+
+
+        // RELEASE DATE VALIDATION
+
+        if(prevState.releaseDate != releaseDate) {
+            let parsedDate
+            let numOfNums = 0
+            if(releaseDate.length == 10){
+                for(var i = 0; i < releaseDate.length; i++){
+                    if (releaseDate[i] <= 9 && releaseDate[i] >= 0){
+                        numOfNums ++
+                    }
+                }
+                parsedDate = new Date(releaseDate.split('/').reverse().join('/'))
+                parsedDate = parsedDate.getTime()
+                
+            }
+            if(parsedDate && numOfNums == 8){
+                this.setState({dateIsValid: true},
+                    () => this.setState({dateIsInvalid: false}))
+            }
+            if(numOfNums == 8 && !parsedDate){
+                this.setState({dateIsInvalid: true}, 
+                    () => this.setState({dateIsValid: false}))
+            }
+            if(numOfNums !=8){
+                this.setState({dateIsInvalid: false}, 
+                    () => this.setState({dateIsValid: false}))
+            }
+        }
+
+        // CRITIC RATING VALIDATION
+
+        if(prevState.criticRating != criticRating){
+
+            let isNumber = true
+            for(var i = 0; i < criticRating.length; i++){
+                if (!(criticRating[i] <= 9 && criticRating[i] >= 0)){
+                    isNumber = false
+                }
+            }
+            if(criticRating && (!isNumber || criticRating > 100 || criticRating < 0)) {
+                this.setState({isCriticRatingValid: false})
+            }
+            else if (criticRating && isNumber && criticRating <= 100 && criticRating >= 0){
+                this.setState({isCriticRatingValid: true})
+            }
+            else if (!criticRating){
+                this.setState({isCriticRatingValid: undefined})
+            }
+        }
+
+        // Set validness
+        
         if (title && poster){
             this.setState({formValid: true})
         }
         else {
             this.setState({formValid: false})
         }
+
+        
     }
 
     onTextInput(e, field){
@@ -137,30 +194,37 @@ class NewGame extends PureComponent {
             selectedPlatforms,
             selectedGenres,
             selectedAgeRestriction,
-            
+            dateIsValid
         } = this.state
 
         let form = new FormData()
         form.append('title', title)
-        form.append('description', description)
         form.append('poster', poster, `${this.state.title}-${Date.now()}-poster.jpg`)
 
 
         // release date validness
-        // presense on release date, studio, publisher, age r, critic rating
-        let date = new Date(releaseDate.split('/').reverse().join('/'))
-        date = date.getTime()
-        form.append('release_date', date)
-        form.append('studio_id', selectedStudio.value)
-        form.append('publisher_id', selectedPublisher.value)
-        form.append('age_restriction_id', selectedAgeRestriction.value)
-        form.append('critic_rating', criticRating)
+        // presense of release date, studio, publisher, age r, critic rating
+        let date = ''
+        if (dateIsValid){
+            date = releaseDate.split('/').reverse().join('/')
+        }
+        // if(releaseDate.length == 10){
+        //     date = new Date(releaseDate.split('/').reverse().join('/'))
+        //     date = date.getTime()
+        // }
 
-        let genreIds = selectedGenres.map(el => el.value)
-        let platformIds = selectedPlatforms.map(el => el.value)
+        description ?               form.append('description', description) : null
+        dateIsValid ?               form.append('release_date', date) : null
+        selectedStudio ?            form.append('studio_id', selectedStudio.value): null
+        selectedPublisher ?         form.append('publisher_id', selectedPublisher.value) : null
+        selectedAgeRestriction ?    form.append('age_restriction_id', selectedAgeRestriction.value) : null
+        criticRating ?              form.append('critic_rating', criticRating) : null
 
-        form.append('genre_ids', genreIds)
-        form.append('platform_ids', platformIds)
+        let genreIds = selectedGenres ? selectedGenres.map(el => el.value) : null
+        let platformIds = selectedPlatforms ? selectedPlatforms.map(el => el.value) : null
+
+        genreIds ?                  form.append('genre_ids', JSON.stringify(genreIds)) : null
+        platformIds ?               form.append('platform_ids', JSON.stringify(platformIds)) : null
 
         let response = createGame(form)
     }
@@ -172,6 +236,7 @@ class NewGame extends PureComponent {
         let {
             title, 
             description,
+            poster,
             releaseDate, 
             criticRating,
             genres,
@@ -184,8 +249,13 @@ class NewGame extends PureComponent {
             selectedAgeRestriction,
             selectedGenres,
             selectedPlatforms,
-            formValid
+            formValid,
+            dateIsValid,
+            dateIsInvalid,
+            isCriticRatingValid
         } = this.state
+
+        
 
 
         return(
@@ -194,7 +264,8 @@ class NewGame extends PureComponent {
 
                     <div className='form-first-row'>
                         <div className='form-item'>
-                            <label htmlFor='game-title'>Название</label>
+                            <span>{title  ? '✔️ ':''}</span>
+                            <label htmlFor='game-title'>Название<span className='required-asterisk'> *</span></label>
                             <Input
                                 className='game-title-input'
                                 id='game-title'
@@ -205,6 +276,7 @@ class NewGame extends PureComponent {
                             />
                         </div>
                         <div>
+                        <span>{selectedStudio  ? '✔️ ':''}</span>
                             <label>Разработчик:</label>
                             <Select 
                                 styles={this.studioSelectStyles}
@@ -215,6 +287,7 @@ class NewGame extends PureComponent {
                             />
                         </div>
                         <div>
+                            <span>{selectedPublisher  ? '✔️ ':''}</span>
                             <label>Издатель:</label>
                             <Select 
                                 styles={this.studioSelectStyles}
@@ -229,6 +302,7 @@ class NewGame extends PureComponent {
                     <div className='description-poster-container'>
                         <div className='description-genre-platform-container'>
                             <div className='form-item'>
+                                <span>{description  ? '✔️ ':''}</span>
                                 <label htmlFor='game-description'>Описание</label>
                                 <Input 
                                     id='game-description'
@@ -239,6 +313,7 @@ class NewGame extends PureComponent {
                                 />
                             </div>
                             <div>
+                                <span>{selectedGenres  ? '✔️ ':''}</span>
                                 <label>Жанры:</label>
                                 <Select
                                     styles={this.studioSelectStyles}
@@ -250,6 +325,7 @@ class NewGame extends PureComponent {
                                 />
                             </div>
                             <div>
+                                <span>{selectedPlatforms  ? '✔️ ':''}</span>
                                 <label>Платформы:</label>
                                 <Select
                                     styles={this.studioSelectStyles}
@@ -262,11 +338,18 @@ class NewGame extends PureComponent {
                             </div>
                         </div>
                         <div>
-                            <label>Постер</label>
-                            <Dropzone onChange={this.onAddPoster}></Dropzone>
+                            <span>{poster  ? '✔️ ':''}</span>
+                            <label>Постер<span className='required-asterisk'> *</span></label>
+                            <Dropzone 
+                                onChange={this.onAddPoster}
+                                accept={['image/jpeg', 'image/png']}
+                                isFilePresent={poster}
+                            ></Dropzone>
                         </div>
                     </div>
                     <div>
+                        <span>{dateIsValid  ? '✔️ ':''}</span>
+                        <span>{dateIsInvalid? '❌ ': ''}</span>
                         <label>Дата релиза:</label>
                         <InputMask 
                             className='field-container game-release-input'
@@ -278,6 +361,7 @@ class NewGame extends PureComponent {
                     </div>
                     
                     <div>
+                        <span>{selectedAgeRestriction ? '✔️ ':''}</span>
                         <label>Возрастное ограничение:</label>
                         <Select
                             styles={this.ageSelectStyles}
@@ -286,8 +370,11 @@ class NewGame extends PureComponent {
                             onChange={(val)=> this.onSelect(val, 'selectedAgeRestriction')}
                             value={selectedAgeRestriction}
                         />
+                        
                     </div>
                     <div>
+                        <span>{isCriticRatingValid == true ? '✔️ ':''}</span>
+                        <span>{isCriticRatingValid == false ? '❌ ':''}</span>
                         <label>Рейтинг критиков:</label>
                         <Input 
                             className='game-critic-rating-input single-line'
