@@ -7,7 +7,7 @@
     "devNext": "next",
     "dev": "NODE_ENV=development node customserver.js",
     "build": "next build",
-    "start": "next start",
+    "start": "NODE_ENV=production node customserver.js",
     "api": "node api.js"
   },
   "keywords": [],

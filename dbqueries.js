@@ -240,6 +240,88 @@ const getGames = (request, response) => {
 }
 
 
+const getGameById = (request, response) => {
+    console.log('gameid: ', request.params.gameid)
+    pool.query(`SELECT 
+                title, 
+                release_date, 
+                description, 
+                user_rating, 
+                critic_rating,
+                poster_url,
+                studios.name AS studio_name, 
+                publishers.name AS publisher_name,
+                age_restrictions.name AS age_restriction_name,
+                JSON_AGG(genres) AS genres
+                FROM games 
+                
+                
+
+                LEFT JOIN games_genres ON (games.id = games_genres.game_id)
+                LEFT JOIN genres ON (genre_id = genres.id)
+        
+                LEFT JOIN studios ON (games.studio_id = studios.id) 
+                LEFT JOIN publishers ON (games.publisher_id = publishers.id)
+                LEFT JOIN age_restrictions ON (games.age_restriction_id = age_restrictions.id)
+                WHERE games.id = 37
+                GROUP BY
+                    title, 
+                    release_date, 
+                    description, 
+                    user_rating, 
+                    critic_rating,
+                    poster_url,
+                    studio_name,
+                    publisher_name,
+                    age_restriction_name
+                ;
+                `
+    )
+        .then(result => response.status(200).json(result.rows))
+        .catch(err => response.status(500).json({error: err}))
+}
+
+// const getGameById = (request, response) => {
+//     console.log('gameid: ', request.params.gameid)
+//     pool.query(`SELECT 
+//                 title, 
+//                 release_date, 
+//                 description, 
+//                 user_rating, 
+//                 critic_rating,
+//                 poster_url,
+//                 studios.name AS studio_name, 
+//                 publishers.name AS publisher_name,
+//                 age_restrictions.name AS age_restriction_name,
+//                 JSON_AGG (genres) genres,
+//                 JSON_AGG (platforms) platforms
+//                 FROM games 
+                
+//                 LEFT JOIN games_genres ON (games.id = games_genres.game_id)
+//                 LEFT JOIN genres ON (genre_id = genres.id)
+//                 LEFT JOIN games_platforms ON (games.id = games_platforms.game_id)
+//                 LEFT JOIN platforms ON (platform_id = platforms.id)
+//                 LEFT JOIN studios ON (games.studio_id = studios.id) 
+//                 LEFT JOIN publishers ON (games.publisher_id = publishers.id)
+//                 LEFT JOIN age_restrictions ON (games.age_restriction_id = age_restrictions.id)
+//                 WHERE games.id = 37
+//                 GROUP BY 
+//                 title,
+//                 release_date,
+//                 description,
+//                 user_rating,
+//                 critic_rating,
+//                 poster_url,
+//                 studio_name,
+//                 publisher_name,
+//                 age_restriction_name;
+//                 `
+//     )
+//         .then(result => response.status(200).json(result.rows))
+//         .catch(err => response.status(500).json({error: err}))
+// }
+
+
 const createGame = (request, response) => {
     console.log('createGame invoked')
     pool.query(`INSERT INTO games (
@@ -446,6 +528,7 @@ module.exports = {
     deleteGenre,
 
     getGames,
+    getGameById,
     createGame,
     updateGame,
     deleteGame,
