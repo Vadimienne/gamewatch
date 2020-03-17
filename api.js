@@ -57,6 +57,7 @@ app.post('/publishers', db.createPublisher)
 app.get('/games', db.getGames)
 app.get('/games/:gameid', db.getGameById)
 app.post('/games', uploadPosters.single('poster'), db.createGame)
+app.put('/games/:gameid', uploadPosters.single('poster'), db.updateGame)
 
 app.get('/reviews', db.getReviews)
 

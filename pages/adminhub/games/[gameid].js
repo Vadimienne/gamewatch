@@ -17,7 +17,8 @@ import {
     getAgeRestrictions, 
     getGenres, 
     getPlatforms,
-    createGame
+    getGameById,
+    updateGame
 } from 'api/queries'
 
 import 'styles/admin/newGame.sass'
@@ -40,6 +41,7 @@ class AdminGamePage extends PureComponent {
             selectedAgeRestriction: null,
             selectedPlatforms: null,
             selectedGenres: null,
+            posterUrl: null
         }
 
         this.onTextInput = this.onTextInput.bind(this)
@@ -78,6 +80,52 @@ class AdminGamePage extends PureComponent {
         let mappedPlatforms = []
         platforms.map(el => mappedPlatforms.push({value: el.id, label: el.name}))
         this.setState({platforms: mappedPlatforms})
+
+        const { router } = this.props
+        let game = await getGameById(router.query.gameid)
+        game = await game.json()
+        game = game[0]
+
+        let releaseDate = ''
+
+        if(game.release_date) {
+            let date = new Date(game.release_date)
+            releaseDate = `
+                ${date.getDate() < 10? '0' + date.getDate(): date.getDate()}/
+                ${date.getMonth() < 10? '0' + date.getMonth(): date.getMonth()}/
+                ${date.getFullYear()}`
+        }
+
+        function selectSingleById(id, array){
+            return array.find(el => el.value == id)
+        }
+
+        function selecteMultipleById(ids, array){
+            let result = []
+            for (let id of ids){
+                result.push(array.find(el => el.value == id))
+            }
+            return result
+        }
+
+        let selectedStudio = selectSingleById(game.studio_id, this.state.studios)
+        let selectedPublisher = selectSingleById(game.publisher_id, this.state.publishers)
+        let selectedAgeRestriction = selectSingleById(game.age_restriction_id, this.state.ageRestrictions)
+        let selectedGenres = selecteMultipleById(game.genre_ids, this.state.genres)
+        let selectedPlatforms = selecteMultipleById(game.platform_ids, this.state.platforms)
+
+        this.setState({
+            title: game.title,
+            description: game.description,
+            criticRating: game.critic_rating,
+            releaseDate,
+            selectedStudio,
+            selectedPublisher,
+            selectedGenres,
+            selectedPlatforms,
+            selectedAgeRestriction,
+            posterUrl: game.poster_url
+        })
     }
 
     // VARIABLES
@@ -104,6 +152,7 @@ class AdminGamePage extends PureComponent {
         let {
             title,
             poster,
+            posterUrl,
             releaseDate,
             criticRating
         } = this.state
@@ -140,28 +189,30 @@ class AdminGamePage extends PureComponent {
 
         // CRITIC RATING VALIDATION
 
-        if(prevState.criticRating != criticRating){
+        if(criticRating){
+            if(prevState.criticRating != criticRating){
 
-            let isNumber = true
-            for(var i = 0; i < criticRating.length; i++){
-                if (!(criticRating[i] <= 9 && criticRating[i] >= 0)){
-                    isNumber = false
+                let isNumber = true
+                for(var i = 0; i < criticRating.length; i++){
+                    if (!(criticRating[i] <= 9 && criticRating[i] >= 0)){
+                        isNumber = false
+                    }
                 }
-            }
-            if(criticRating && (!isNumber || criticRating > 100 || criticRating < 0)) {
-                this.setState({isCriticRatingValid: false})
-            }
-            else if (criticRating && isNumber && criticRating <= 100 && criticRating >= 0){
-                this.setState({isCriticRatingValid: true})
-            }
-            else if (!criticRating){
-                this.setState({isCriticRatingValid: undefined})
+                if(criticRating && (!isNumber || criticRating > 100 || criticRating < 0)) {
+                    this.setState({isCriticRatingValid: false})
+                }
+                else if (criticRating && isNumber && criticRating <= 100 && criticRating >= 0){
+                    this.setState({isCriticRatingValid: true})
+                }
+                else if (!criticRating){
+                    this.setState({isCriticRatingValid: undefined})
+                }
             }
         }
 
         // Set validness
         
-        if (title && poster){
+        if (title && (poster || posterUrl)){
             this.setState({formValid: true})
         }
         else {
@@ -177,7 +228,7 @@ class AdminGamePage extends PureComponent {
     
 
     onAddPoster(files){
-        this.setState({poster: files[0]})
+        this.setState({poster: files[0], posterUrl: null})
     }
 
     onSelect(val, field){
@@ -191,6 +242,7 @@ class AdminGamePage extends PureComponent {
             releaseDate,
             criticRating,
             poster,
+            posterUrl,
             selectedPublisher,
             selectedStudio,
             selectedPlatforms,
@@ -201,7 +253,12 @@ class AdminGamePage extends PureComponent {
 
         let form = new FormData()
         form.append('title', title)
-        form.append('poster', poster, `${this.state.title}-${Date.now()}-poster.jpg`)
+        if(posterUrl){
+            form.append('poster_url', posterUrl)
+        }
+        else{
+            form.append('poster', poster, `${this.state.title}-${Date.now()}-poster.jpg`)
+        }
 
 
         // release date validness
@@ -228,7 +285,7 @@ class AdminGamePage extends PureComponent {
         genreIds ?                  form.append('genre_ids', JSON.stringify(genreIds)) : null
         platformIds ?               form.append('platform_ids', JSON.stringify(platformIds)) : null
 
-        let response = createGame(form)
+        let response = updateGame(this.props.router.query.gameid, form)
     }
 
 
@@ -239,6 +296,7 @@ class AdminGamePage extends PureComponent {
             title, 
             description,
             poster,
+            posterUrl,
             releaseDate, 
             criticRating,
             genres,
@@ -257,7 +315,6 @@ class AdminGamePage extends PureComponent {
             isCriticRatingValid
         } = this.state
 
-        
 
 
         return(
@@ -340,12 +397,13 @@ class AdminGamePage extends PureComponent {
                             </div>
                         </div>
                         <div>
-                            <span>{poster  ? '✔️ ':''}</span>
+                            <span>{poster || posterUrl  ? '✔️ ':''}</span>
                             <label>Постер<span className='required-asterisk'> *</span></label>
                             <Dropzone 
                                 onChange={this.onAddPoster}
                                 accept={['image/jpeg', 'image/png']}
                                 isFilePresent={poster}
+                                url={posterUrl}
                             ></Dropzone>
                         </div>
                     </div>
@@ -390,7 +448,7 @@ class AdminGamePage extends PureComponent {
                         onClick={this.onSubmit}
                         disabled={!formValid}
                     >
-                        Cоздать
+                        Обновить
                     </Button>
                     
                 </form>

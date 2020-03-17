@@ -25,6 +25,10 @@ export function getGames(){
     return dFetch('/games')
 }
 
+export function getGameById(id){
+    return dFetch(`/games/${id}`)
+}
+
 export function createGame(json) {
     return dFetch('/games', {
         method: 'POST',
@@ -32,10 +36,10 @@ export function createGame(json) {
     })
 }
 
-export function updateGame(json){
-    return dFetch('/games', {
+export function updateGame(id, json){
+    return dFetch(`/games/${id}`, {
         method: 'PUT',
-        body: JSON.stringify(json)
+        body: json
     })
 }
 

@@ -82,8 +82,8 @@ class Dropzone extends PureComponent {
 
     render() {
 
-        const {imagePreview} = this.state
-        
+        const imagePreview = this.state.imagePreview ? this.state.imagePreview : 
+            (this.props.url ? '/' + this.props.url : null)
 
         return (
             <div
@@ -93,7 +93,8 @@ class Dropzone extends PureComponent {
                 onClick={this.openFileDialog}
                 style={{ 
                     cursor: this.props.disabled ? 'default' : 'pointer', 
-                    backgroundImage: imagePreview ? `url(${imagePreview})`: '',
+                    
+                    backgroundImage: imagePreview ? `url('${imagePreview}')`: '',
                     height: this.props.height? this.props.height : '300px',
                     width: this.props.width? this.props.width: '200px'
                 }}

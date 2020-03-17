@@ -28,12 +28,23 @@ class GameCard extends PureComponent {
             age_restriction_name
         } = this.props.game
         
-        let releaseDate = new Date(release_date)
-        releaseDate = releaseDate.toUTCString()
-        let releaseArray = releaseDate.split(' ')
-        releaseArray.pop()
-        releaseArray.pop()
-        releaseDate = releaseArray.join(' ')
+        // let releaseDate = new Date(release_date)
+        // releaseDate = releaseDate.toUTCString()
+        // let releaseArray = releaseDate.split(' ')
+        // releaseArray.pop()
+        // releaseArray.pop()
+        // releaseDate = releaseArray.join(' ')
+
+        let releaseDate = ''
+
+        if(release_date) {
+            let date = new Date(release_date)
+            releaseDate = `
+                ${date.getDate() < 10? '0' + date.getDate(): date.getDate()}/
+                ${date.getMonth() < 10? '0' + date.getMonth(): date.getMonth()}/
+                ${date.getFullYear()}`
+        }
+
 
         return(
             <>

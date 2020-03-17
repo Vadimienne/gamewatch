@@ -221,6 +221,7 @@ const deleteGenre = (request, response) => {
 
 const getGames = (request, response) => {
     pool.query(`SELECT 
+                games.id AS id,
                 title, 
                 release_date, 
                 description, 
@@ -249,21 +250,25 @@ const getGameById = (request, response) => {
                 user_rating, 
                 critic_rating,
                 poster_url,
-                studios.name AS studio_name, 
-                publishers.name AS publisher_name,
-                age_restrictions.name AS age_restriction_name,
-                JSON_AGG(genres) AS genres
+                studios.id AS studio_id, 
+                publishers.id AS publisher_id,
+                age_restrictions.id AS age_restriction_id,
+                JSON_AGG(DISTINCT genres.id) AS genre_ids,
+                JSON_AGG(DISTINCT platforms.id) AS platform_ids
                 FROM games 
                 
                 
 
                 LEFT JOIN games_genres ON (games.id = games_genres.game_id)
                 LEFT JOIN genres ON (genre_id = genres.id)
+
+                LEFT JOIN games_platforms ON (games.id = games_platforms.game_id)
+                LEFT JOIN platforms ON (platform_id = platforms.id)
         
                 LEFT JOIN studios ON (games.studio_id = studios.id) 
                 LEFT JOIN publishers ON (games.publisher_id = publishers.id)
                 LEFT JOIN age_restrictions ON (games.age_restriction_id = age_restrictions.id)
-                WHERE games.id = 37
+                WHERE games.id = ${request.params.gameid}
                 GROUP BY
                     title, 
                     release_date, 
@@ -271,56 +276,14 @@ const getGameById = (request, response) => {
                     user_rating, 
                     critic_rating,
                     poster_url,
-                    studio_name,
-                    publisher_name,
-                    age_restriction_name
-                ;
+                    studios.id,
+                    publishers.id,
+                    age_restrictions.id
                 `
     )
         .then(result => response.status(200).json(result.rows))
         .catch(err => response.status(500).json({error: err}))
 }
-
-// const getGameById = (request, response) => {
-//     console.log('gameid: ', request.params.gameid)
-//     pool.query(`SELECT 
-//                 title, 
-//                 release_date, 
-//                 description, 
-//                 user_rating, 
-//                 critic_rating,
-//                 poster_url,
-//                 studios.name AS studio_name, 
-//                 publishers.name AS publisher_name,
-//                 age_restrictions.name AS age_restriction_name,
-//                 JSON_AGG (genres) genres,
-//                 JSON_AGG (platforms) platforms
-//                 FROM games 
-                
-//                 LEFT JOIN games_genres ON (games.id = games_genres.game_id)
-//                 LEFT JOIN genres ON (genre_id = genres.id)
-//                 LEFT JOIN games_platforms ON (games.id = games_platforms.game_id)
-//                 LEFT JOIN platforms ON (platform_id = platforms.id)
-//                 LEFT JOIN studios ON (games.studio_id = studios.id) 
-//                 LEFT JOIN publishers ON (games.publisher_id = publishers.id)
-//                 LEFT JOIN age_restrictions ON (games.age_restriction_id = age_restrictions.id)
-//                 WHERE games.id = 37
-//                 GROUP BY 
-//                 title,
-//                 release_date,
-//                 description,
-//                 user_rating,
-//                 critic_rating,
-//                 poster_url,
-//                 studio_name,
-//                 publisher_name,
-//                 age_restriction_name;
-//                 `
-//     )
-//         .then(result => response.status(200).json(result.rows))
-//         .catch(err => response.status(500).json({error: err}))
-// }
-
 
 const createGame = (request, response) => {
     console.log('createGame invoked')
@@ -368,44 +331,41 @@ const createGame = (request, response) => {
 
 const updateGame = (request, response) => {
     pool.query(`UPDATE games 
-                SET title = ${request.body.title},
-                    release_date = '${request.body.release_date}',
-                    description = '${request.body.description}',
-                    publisher_id = ${request.body.publisher_id},
-                    studio_id = ${request.body.studio_id},
-                    age_restriction_id = ${request.body.age_restriction_id},
-                    critic_rating = ${request.body.critic_rating}
-                WHERE id = ${request.body.id}`, 
-                (err, result) => {
-                    if (err) {
-                        throw err
-                    }
+                SET title = '${request.body.title}',
+                    release_date = '${request.body.release_date || 'infinity'}',
+                    description = '${request.body.description || null}',
+                    publisher_id = ${request.body.publisher_id || null},
+                    studio_id = ${request.body.studio_id || null},
+                    age_restriction_id = ${request.body.age_restriction_id || null},
+                    critic_rating = ${request.body.critic_rating || null},
+                    poster_url = '${request.file? request.file.path: request.body.poster_url}'
+                WHERE id = ${request.params.gameid}`) 
+                .then(result => {
+                    let gameId = request.params.gameid
+                    pool.query(`DELETE FROM games_genres WHERE game_id=${gameId}`)
+                    pool.query(`DELETE FROM games_platforms WHERE game_id=${gameId}`)
 
-                    var currentGenreId
-                    for (currentGenreId of request.body.genres) {
+                    let genre_ids = JSON.parse(request.body.genre_ids)
+                    for (var i = 0; i < genre_ids.length; i++) {
                         pool.query(`INSERT INTO games_genres (game_id, genre_id)
-                                    VALUES (${request.body.id}, ${currentGenreId}`,
-                                    (genreError, genreResult) => {
-                                        if (genreError) {
-                                            throw genreError
-                                        }
-                                    })
+                                    VALUES (${gameId}, ${genre_ids[i]})`)
+                            .then(() => console.log('done'))
+                            .catch(err => {throw err})
                     }
 
-                    var currentPlatformId
-                    for (currentPlatformId of request.body.platforms) {
+                    let platform_ids = JSON.parse(request.body.platform_ids)
+                    for (var i = 0; i < platform_ids.length; i++) {
                         pool.query(`INSERT INTO games_platforms (game_id, platform_id)
-                                    VALUES (${request.body.id}, ${currentPlatformId}`,
-                                    (genreError, genreResult) => {
-                                        if (genreError) {
-                                            throw genreError
-                                        }
-                                    })
+                                    VALUES (${gameId}, ${platform_ids[i]})`)
+                            .then(() => console.log('done'))
+                            .catch(err => {throw err})
                     }
-
-                    response.status(200).json(result.rows)
-                }
-    )
+                })
+                .then(() => response.status(200))
+                .catch(err => {
+                    console.log('gotcha error: ', err)
+                    response.status(500).json({error: err.toString()})
+                })
 }
 
 const deleteGame = (request, response) => {

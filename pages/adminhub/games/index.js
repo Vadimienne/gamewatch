@@ -5,6 +5,7 @@ import AdminLayout from 'components/admin/Layout'
 
 import GameCard from 'components/admin/GameCard'
 import Button from 'components/Button'
+import Link from 'next/link'
 
 import 'styles/admin/Games.sass'
 
@@ -53,8 +54,10 @@ class AdminGames extends PureComponent {
                         <div className='game'>
                             <ul>
                             {this.state.games.map((game, index) => 
-                                <li key={`game-li-item-admin-${index}`}>
-                                    <GameCard game={game} key={`game-item-admin-${index}`}/>
+                                <li className='game-list-item' key={`game-li-item-admin-${index}`}>
+                                    <Link href={`/adminhub/games/${game.id}`}>
+                                        <a><GameCard game={game} key={`game-item-admin-${index}`}/></a>
+                                    </Link>
                                 </li>
                             )}
                             </ul>
