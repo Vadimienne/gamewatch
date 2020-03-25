@@ -1,5 +1,7 @@
+import fetch from 'isomorphic-unfetch'
+
 export const apiPath = process.env.NODE_ENV == 'production' ? 
-    'http://95.73.203.246:81': 
+    'http://95.73.203.86:81': 
     'http://localhost:3001'
 
 let defaultHeaders = {}

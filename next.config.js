@@ -12,6 +12,10 @@ module.exports = withSass(withCss({
             test: /\.(woff|woff2|eot|ttf|otf)$/,
             use: ['file-loader']
         })
+        config.module.rules.push({
+            test: /\.svg$/,
+            use: ['@svgr/webpack'],
+          })
         return config
     }
 }))

@@ -19,9 +19,9 @@ const port = 3001
 const allowedCorsOrigins = [
     'http://localhost:3000', 
     'http://localhost:3001', 
-    'http://95.73.203.246:80',
-    'http://95.73.203.246:81',
-    'http://95.73.203.246'
+    'http://95.73.203.86:80',
+    'http://95.73.203.86:81',
+    'http://95.73.203.86'
   ]
 
 const db = require('./dbqueries.js')

@@ -8,9 +8,9 @@ const cors = require('cors')
 const allowedCorsOrigins = [
   'http://localhost:3000', 
   'http://localhost:3001', 
-  'http://95.73.203.246:80',
-  'http://95.73.203.246:81',
-  'http://95.73.203.246'
+  'http://95.73.203.86:80',
+  'http://95.73.203.86:81',
+  'http://95.73.203.86'
 ]
 
 console.log('node env: ', process.env.NODE_ENV)

@@ -23,11 +23,11 @@ class MyApp extends PureComponent{
         const { Component, pageProps, store } = this.props
 
         return (
-            <Provider store={store}>
+            //<Provider store={store}>
                 <Component {...pageProps} />
-            </Provider>
+            //</Provider>
         )
     }
 }
 
-export default withRedux(initStore)(MyApp)
+export default MyApp//withRedux(initStore)(MyApp)
