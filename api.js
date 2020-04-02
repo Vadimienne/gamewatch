@@ -48,6 +48,8 @@ app.use(incomingRequestLogger)
 //app.use(errorHandler)
 // app.use(responseSender)
 
+// PUBLISHERS
+
 app.get('/publishers', db.getPublishers)
 
 app.post('/publishers', db.createPublisher)
@@ -81,4 +83,8 @@ app.get('/genres', db.getGenres)
 
 app.post('/genres', db.createGenre)
 
-app.listen(port, () => console.log('Apps listening on port ',port, '!'))
+app.listen(port, () => console.log('Apps listening on port ', port, '!'))
+
+// USERS
+
+//app.post('/create-user', db.createUser)

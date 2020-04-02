@@ -12,7 +12,10 @@ const pool = new Pool({
 //
 // 
 
-// const createUser
+const createUser = (request, response) => { 
+    //request.body
+    //pool.query('')
+}
 // const updateUser
 // const deleteUser
 // const getUserById
@@ -250,11 +253,11 @@ const getGameById = (request, response) => {
                 user_rating, 
                 critic_rating,
                 poster_url,
-                studios.id AS studio_id, 
-                publishers.id AS publisher_id,
-                age_restrictions.id AS age_restriction_id,
-                JSON_AGG(DISTINCT genres.id) AS genre_ids,
-                JSON_AGG(DISTINCT platforms.id) AS platform_ids
+                ROW_TO_JSON(studios) AS studio, 
+                ROW_TO_JSON(publishers) AS publisher,
+                ROW_TO_JSON(age_restrictions) AS age_restriction,
+                JSON_AGG(DISTINCT genres) AS genres,
+                JSON_AGG(DISTINCT platforms) AS platforms
                 FROM games 
                 
                 
@@ -281,7 +284,10 @@ const getGameById = (request, response) => {
                     age_restrictions.id
                 `
     )
-        .then(result => response.status(200).json(result.rows))
+        .then(result => {
+            console.log(result.rows)
+            response.status(200).json(result.rows[0])
+        })
         .catch(err => response.status(500).json({error: err}))
 }
 

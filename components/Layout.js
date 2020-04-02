@@ -5,15 +5,15 @@ import 'styles/Layout.sass'
 import Logo from 'icons/SVG/addtolibrary.svg'
 import Svg from 'components/Svg' 
 
-const AdminLayout = (props) => (
+const Layout = (props) => (
     <>
-        <div className='admin-header'>
+        <div className='header'>
         </div>
-        <div className='admin-body'>
+        <div className='body'>
             {props.children}
         </div>
-        <div className='admin-footer'></div>
+        <div className='footer'></div>
     </>
 );
 
-export default AdminLayout;
+export default Layout;

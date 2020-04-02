@@ -84,7 +84,6 @@ class AdminGamePage extends PureComponent {
         const { router } = this.props
         let game = await getGameById(router.query.gameid)
         game = await game.json()
-        game = game[0]
 
         let releaseDate = ''
 
@@ -96,23 +95,23 @@ class AdminGamePage extends PureComponent {
                 ${date.getFullYear()}`
         }
 
-        function selectSingleById(id, array){
-            return array.find(el => el.value == id)
+        function selectSingleById(target, array){
+            return array.find(el => el.value == target.id)
         }
 
-        function selecteMultipleById(ids, array){
+        function selecteMultipleById(targets, array){
             let result = []
-            for (let id of ids){
-                result.push(array.find(el => el.value == id))
+            for (let target of targets){
+                result.push(array.find(el => el.value == target.id))
             }
             return result
         }
 
-        let selectedStudio = selectSingleById(game.studio_id, this.state.studios)
-        let selectedPublisher = selectSingleById(game.publisher_id, this.state.publishers)
-        let selectedAgeRestriction = selectSingleById(game.age_restriction_id, this.state.ageRestrictions)
-        let selectedGenres = selecteMultipleById(game.genre_ids, this.state.genres)
-        let selectedPlatforms = selecteMultipleById(game.platform_ids, this.state.platforms)
+        let selectedStudio = selectSingleById(game.studio, this.state.studios)
+        let selectedPublisher = selectSingleById(game.publisher, this.state.publishers)
+        let selectedAgeRestriction = selectSingleById(game.age_restriction, this.state.ageRestrictions)
+        let selectedGenres = selecteMultipleById(game.genres, this.state.genres)
+        let selectedPlatforms = selecteMultipleById(game.platforms, this.state.platforms)
 
         this.setState({
             title: game.title,

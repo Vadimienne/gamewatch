@@ -1,0 +1,43 @@
+.rating-selector
+    width: 340px
+    height: 30px
+    position: relative
+
+    &__unselected-container
+        height: inherit
+        width: inherit
+        background-image: url('/static/icons/rating-stars-unselected.png')
+        background-size: 340px auto
+        background-position: 0
+        
+    
+    &__selected-container
+        position: absolute
+        top: 0
+        height: inherit
+        width: inherit
+        background-image: url('/static/icons/rating-stars-selected.png')
+        background-size: 340px auto
+        background-position: 0
+
+    &__mapped-stars
+        display: flex
+        position: absolute
+        top: 0px
+
+
+    &__rating-star
+        flex: 0 0 auto
+
+        position: relative
+        top: 0
+        width: 34px
+        height: 30px
+        cursor: pointer
+        
+        
+        
+        
+
+    
+        
