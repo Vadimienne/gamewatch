@@ -1,4 +1,5 @@
 import { PureComponent } from "react"
+import ContentEditable from 'react-contenteditable'
 
 import 'styles/Input.sass'
 
@@ -18,26 +19,42 @@ class Class extends PureComponent {
             maxLength,
             id,
             textArea,
-            rows
+            rows,
+            resizable
         } = this.props
 
         return(
                 <>
-                    <textarea
-                        id={id}
-                        className={'text-input field-container ' + className}
+                <ContentEditable
+                    
+                    id={id}
+                    className={'text-input field-container ' + className }
                         onChange={onChange}
-                        value={value}
+                        html={value}
                         placeholder={placeholder}
                         maxLength={maxLength}
                         rows={rows}
-                    />
+                />
                 </>
         )
     }
 }
 
 export default Class
+
+// return(
+//     <>
+//     <textarea
+//         id={id}
+//         className={'text-input field-container ' + className }
+//             onChange={onChange}
+//             value={value}
+//             placeholder={placeholder}
+//             maxLength={maxLength}
+//             rows={rows}
+//         />
+//     </>
+// )
 
 
 // <>

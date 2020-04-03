@@ -221,7 +221,7 @@ class AdminGamePage extends PureComponent {
         
     }
 
-    onTextInput(e, field){
+    onTextInput(e, field) {
         this.setState({[`${field}`]: e.target.value})
     }
     
@@ -411,7 +411,7 @@ class AdminGamePage extends PureComponent {
                         <span>{dateIsInvalid? '❌ ': ''}</span>
                         <label>Дата релиза:</label>
                         <InputMask 
-                            className='field-container game-release-input'
+                            className='text-input game-release-input'
                             mask='99/99/9999'
                             placeholder='31/12/2020'
                             value={releaseDate}

@@ -1,4 +1,4 @@
-.field-container
+.text-input
     border: 1px solid #e6e6e6
     background-color: #FFF
     border-radius: 4px
@@ -10,6 +10,8 @@
     display: flex
     padding: 5px
     overflow: hidden
+    box-sizing: border-box
+    cursor: text
 
 
     &.single-line
@@ -17,3 +19,9 @@
         height: 26px
         font-size: 16px
         white-space: nowrap
+
+    &.resizable
+        resize: both
+
+    &.unresizable
+        resize: none

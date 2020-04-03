@@ -6,6 +6,7 @@ import Rating from 'components/Rating'
 import RatingSelect from 'components/RatingSelect'
 import Comment from 'components/Comment'
 import Input from 'components/Input'
+import Button from 'components/Button'
 
 import { getGameById } from 'api/queries'
 
@@ -103,7 +104,14 @@ class GamePage extends PureComponent {
                     <div className='div-line'></div>
                     <div className='game-page__comment-section'>
                         <Comment comment={comment}> </Comment>
-                        <Input></Input>
+                        
+                        <div className='game-page__comment-input-frame'>
+                            <Input
+                                className='game-page__comment-input'
+                                placeholder='Оставьте комментарий...'
+                            ></Input>
+                            <Button className='game-page__send-comment-btn active'>Отправить</Button>
+                        </div>
                     </div>
 
                 </div>
